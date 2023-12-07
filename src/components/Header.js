@@ -5,17 +5,25 @@ import { useNavigate } from "react-router-dom";
 import { LOGO } from "../utils/constants";
 import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../utils/userSlice";
+import {toggleTheme} from "../utils/themeSlice";
 
 const Header = () => {
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
+  const isDarktheme = useSelector((state) => state.theme.isDarktheme);
+
+  
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {})
       .catch((error) => {
         navigate("/error");
       });
+  };
+
+  const handleThemeToggle = () =>{
+   dispatch(toggleTheme());
   };
 
   useEffect(() => {
@@ -50,6 +58,9 @@ const Header = () => {
           <button onClick={handleSignOut} className="font-bold text-white ">
             (Sign Out)
           </button>
+          <header className={isDarktheme ? "bg-gray-900 text-violet-100" : "bg-white text-black"}>
+           <button onClick={handleThemeToggle} > buttonText </button>
+          </header>
         </div>
       )}
     </div>
